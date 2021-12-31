@@ -20,12 +20,28 @@ router.get('/', (req, res) => {
   })
 });
 
+// GET /api/categories/1
 router.get('/:id', (req, res) => {
   Category.findOne({
-
-  })
+    where: {
+      id: req.params.id
+    },
+    include: {
+      model: Product,
+      attributes: ['id', 'product_name', 'price', 'stock']
+    }
+  }).then(categoryData => {
+    if(!categoryData){
+      res.status(404).json({ message: 'There is no category with this id' });
+      return;
+    }
+    res.json(categoryData)
+  }).catch(err => {
+      res.status(500).json(err);
+    });
 });
 
+// POST /api/categories
 router.post('/', (req, res) => {
   // create a new category
 });
