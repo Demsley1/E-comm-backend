@@ -51,6 +51,7 @@ router.post('/', (req, res) => {
   })
 });
 
+// PUT update /api/categories/1
 router.put('/:id', (req, res) => {
   Category.update(req.body, {
     where: { 
@@ -67,8 +68,21 @@ router.put('/:id', (req, res) => {
   });
 });
 
+// DELETE /api/categories/1
 router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+  Category.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(categoryData => {
+    if(!categoryData){
+      res.status(404).json({ message: "No category found with this id" })
+      return;
+    }
+    res.json(categoryData)
+  }).catch(err => {
+    res.status(500).json(err);
+  });
 });
 
 module.exports = router;
