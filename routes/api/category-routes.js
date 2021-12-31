@@ -1,16 +1,29 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
-// The `/api/categories` endpoint
-
+// GET /api/categories 
 router.get('/', (req, res) => {
-  // find all categories
-  // be sure to include its associated Products
+  Category.findAll({
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock']
+      }
+    ]
+  }).then(categoryData => res.json(categoryData))
+  .catch(err => {
+    if(err){
+      console.log(err)
+      res.status(500).json({ message: 'Sorry unable to reach the database at this time' });
+      return;
+    }
+  })
 });
 
 router.get('/:id', (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
+  Category.findOne({
+
+  })
 });
 
 router.post('/', (req, res) => {
