@@ -52,7 +52,19 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+  Category.update(req.body, {
+    where: { 
+      id: req.params.id
+    }
+  }).then(categoryBody => {
+    if(!categoryBody[0]){
+      res.status(404).json({ message: 'No category to update at this id' })
+      return;
+    }
+    res.json(categoryBody)
+  }).catch(err => {
+    res.status(500).json(err) 
+  });
 });
 
 router.delete('/:id', (req, res) => {
