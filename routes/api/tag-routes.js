@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { runInNewContext } = require('vm');
 const { Tag, Product, ProductTag } = require('../../models');
 
 router.get('/', (req, res) => {
@@ -49,7 +48,9 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // create a new tag
   //expets { "tag_name": "green"}
-  Tag.create(req.body)
+  Tag.create({
+    tag_name: req.body.tag_name
+  })
   .then(tagBody => res.json(tagBody))
   .catch(err => {
     res.status(500).json(err)
@@ -58,15 +59,19 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  // expects { "tag_name": "clothe" }
   Tag.update(req.body, {
     where: {
       id: req.params.id
     }
   }).then(tagBody => {
     if(!tagBody){
-
+      res.status(404).json({ message: 'No tag found with this id to be able to update'})
+      return;
     }
-  })
+  }).catch(err => {
+    res.status(500).json(err);
+  });
 });
 
 router.delete('/:id', (req, res) => {
