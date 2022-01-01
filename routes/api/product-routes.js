@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { rsort } = require('semver');
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// get all products /api/products
+// Get all products /api/products
 router.get('/', (req, res) => {
   // be sure to include its associated Category and Tag data
   Product.findAll({
@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
   })
 });
 
-// get one product /api/products/1
+// Get one product /api/products/1
 router.get('/:id', (req, res) => {
   // be sure to include its associated Category and Tag data
   Product.findOne({
@@ -60,7 +60,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// create new product
+// Create new product /api/products
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -97,9 +97,8 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product /api/products/6
+// Update product /api/products/1
 router.put('/:id', (req, res) => {
-  // update product data
   Product.update(req.body, {
     where: {
       id: req.params.id,
@@ -139,10 +138,8 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// Delete /api/products/1
+// Delete a specific product /api/products/1
 router.delete('/:id', (req, res) => {
-  // {foreign key constraint doesnt work}
-  // delete one product by its `id` value
   Product.destroy({
     attributes: { exclude: ['tagIds'] },
     where: {

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
-// GET /api/categories 
+// GET all categories /api/categories 
 router.get('/', (req, res) => {
   Category.findAll({
     include: [
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
   })
 });
 
-// GET /api/categories/1
+// GET a single category /api/categories/1
 router.get('/:id', (req, res) => {
   Category.findOne({
     where: {
@@ -41,7 +41,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /api/categories
+// POST a new category /api/categories
 router.post('/', (req, res) => {
   Category.create({
     category_name: req.body.category_name
@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
   })
 });
 
-// PUT update /api/categories/1
+// PUT update a specific category /api/categories/1
 router.put('/:id', (req, res) => {
   Category.update(req.body, {
     where: { 
@@ -68,7 +68,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-// DELETE /api/categories/1
+// DELETE a specific catgory /api/categories/1
 router.delete('/:id', (req, res) => {
   Category.destroy({
     where: {
