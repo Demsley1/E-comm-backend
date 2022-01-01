@@ -1,18 +1,57 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// The `/api/products` endpoint
-
-// get all products
+// get all products /api/products
 router.get('/', (req, res) => {
-  // find all products
   // be sure to include its associated Category and Tag data
+  Product.findAll({
+    attributes: ['id', 'product_name', 'price', 'stock'],
+    include: [
+      {
+        model: Category,
+        attributes: ['category_name']
+      },
+      {
+        model: ProductTag,
+        attributes: ['tag_id'],
+        include: {
+          model: Tag,
+          attributes: ['tag_name']
+        }
+      }
+    ]
+  }).then(productData => res.json(productData))
+  .catch(err => {
+    res.status(500).json(err);
+  })
 });
 
-// get one product
+// get one product /api/products/1
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  Product.findOne({
+    where: {
+      id: req.params.id
+    },
+    attributes: ['id', 'product_name', 'price', 'stock',],
+    include: [
+      {
+        model: Category,
+        attributes: ['category_name']
+      },
+      {
+        model: ProductTag,
+        attributes: ['tag_id'],
+        include: {
+          model: Tag,
+          attributes: ['tag_name']
+        }
+      }
+    ]
+  }).then(productData => res.json(productData))
+  .catch(err => {
+    res.status(500).json(err)
+  })
 });
 
 // create new product
@@ -40,14 +79,14 @@ router.post('/', (req, res) => {
       // if no product tags, just respond
       res.status(200).json(product);
     })
-    .then((productTagIds) => res.status(200).json(productTagIds))
+    .then((productTagIds) => res.json(productTagIds))
     .catch((err) => {
       console.log(err);
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 
-// update product
+// update product /api/products/6
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
