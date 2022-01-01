@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     include: [
       {
         model: ProductTag,
-        attributes: ['product_id'],
+        attributes: {exclude: ['product_id', 'tag_id'] },
         include: {
           model: Product,
           attributes: ['id', 'product_name', 'price', 'stock']
@@ -28,7 +28,7 @@ router.get('/:id', (req, res) => {
     },
     include: {
       model: ProductTag,
-      attributes: ['product_id'],
+      attributes: { exclude: ['product_id', 'tag_id'] },
       include: {
         model: Product,
         attributes: ['id', 'product_name', 'price', 'stock']
@@ -53,6 +53,7 @@ router.post('/', (req, res) => {
   })
   .then(tagBody => res.json(tagBody))
   .catch(err => {
+    console.log(err)
     res.status(500).json(err)
   });
 });
@@ -60,7 +61,7 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
   // expects { "tag_name": "clothe" }
-  Tag.update(req.body, {
+  Tag.update(req.body,{
     where: {
       id: req.params.id
     }
@@ -69,6 +70,7 @@ router.put('/:id', (req, res) => {
       res.status(404).json({ message: 'No tag found with this id to be able to update'})
       return;
     }
+    res.json(tagBody)
   }).catch(err => {
     res.status(500).json(err);
   });
@@ -85,6 +87,7 @@ router.delete('/:id', (req, res) => {
       res.status(404).json({ message: 'Unable to locate tag with this id' });
       return;
     }
+    res.json(tagData)
   }).catch(err => {
     res.status(500).json(err);
   });
