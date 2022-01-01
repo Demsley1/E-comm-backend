@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { rsort } = require('semver');
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products /api/products
@@ -128,8 +129,23 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// Delete /api/products/1
 router.delete('/:id', (req, res) => {
+  // {foreign key constraint doesnt work}
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(productData => {
+    if(!productData){
+      res.status(404).json({ message: 'There is no product found at this id '});
+      return;
+    }
+    res.json(productData)
+  }).catch(err => {
+    res.status(500).json(err);
+  })
 });
 
 module.exports = router;
