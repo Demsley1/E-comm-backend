@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
         attributes: { exclude: ['tag_id', 'product_id'] },
         include: {
           model: Tag,
-          attributes: ['tag_name']
+          attributes: ['id', 'tag_name']
         }
       }
     ]
@@ -45,14 +45,19 @@ router.get('/:id', (req, res) => {
         attributes: { exclude: ['tag_id', 'product_id'] },
         include: {
           model: Tag,
-          attributes: ['tag_name']
+          attributes: ['id', 'tag_name']
         }
       }
     ]
-  }).then(productData => res.json(productData))
-  .catch(err => {
+  }).then(productData => {
+    if(!productData){
+      res.status(404).json({ message: 'Found no product with this id'});
+      return;
+    }
+    res.json(productData);
+  }).catch(err => {
     res.status(500).json(err)
-  })
+  });
 });
 
 // create new product
@@ -139,6 +144,7 @@ router.delete('/:id', (req, res) => {
   // {foreign key constraint doesnt work}
   // delete one product by its `id` value
   Product.destroy({
+    attributes: { exclude: ['tagIds'] },
     where: {
       id: req.params.id
     }

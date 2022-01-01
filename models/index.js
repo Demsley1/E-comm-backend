@@ -14,19 +14,9 @@ Product.belongsTo(Category, {
   foreignKey: 'category_id'
 });
 
-ProductTag.belongsTo(Product, {
-  foreignKey: 'product_id'
-});
-
-ProductTag.belongsTo(Tag, {
-  foreignKey: 'tag_id'
-});
-
-Product.hasMany(ProductTag, {
-  foreignKey: 'product_id'
-});
-
-Tag.hasMany(ProductTag, {
+// Tags belongToMany Products (through ProductTag)
+Tag.belongsToMany(Product, {
+  through: ProductTag,
   foreignKey: 'tag_id'
 });
 
@@ -36,10 +26,20 @@ Product.belongsToMany(Tag, {
   foreignKey: 'product_id'
 });
 
-// Tags belongToMany Products (through ProductTag)
-Tag.belongsToMany(Product, {
-  through: ProductTag,
+ProductTag.belongsTo(Tag, {
   foreignKey: 'tag_id'
+});
+
+ProductTag.belongsTo(Product, {
+  foreignKey: 'product_id'
+});
+
+Tag.hasMany(ProductTag, {
+  foreignKey: 'tag_id'
+});
+
+Product.hasMany(ProductTag, {
+  foreignKey: 'product_id'
 });
 
 module.exports = {
