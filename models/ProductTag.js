@@ -12,6 +12,7 @@ ProductTag.init(
       primaryKey: true,
       autoIncrement: true
     },
+    // get the referenced prodct id, and releveant row data from the product table
     product_id: {
       type: DataTypes.INTEGER,
       references: {
@@ -19,6 +20,7 @@ ProductTag.init(
         key: 'id'
       }
     },
+    // get the referenced tag id ,and tag name from the tag table
     tag_id: {
       type: DataTypes.INTEGER,
       references: {

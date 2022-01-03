@@ -26,6 +26,7 @@ Product.belongsToMany(Tag, {
   foreignKey: 'product_id'
 });
 
+// associations to link productTag to many Products, and many Tags (needs to be included)
 ProductTag.belongsTo(Tag, {
   foreignKey: 'tag_id'
 });

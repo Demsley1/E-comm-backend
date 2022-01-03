@@ -15,10 +15,12 @@ Product.init(
       primaryKey: true,
       autoIncrement: true
     },
+    // set product name as string, and doesn't allow null values
     product_name: {
       type: DataTypes.STRING,
       allowNull: false
     },
+    // create price for product as decimal number that will be evaluated to see if the value is a number and not a string
     price: {
       type: DataTypes.DECIMAL,
       allowNull: false,
@@ -26,6 +28,7 @@ Product.init(
         isNumeric: true
       }
     },
+    // create stock of item as integer, that doesnt allow null values, has a default value of 10, and validates for a number like price column
     stock: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -34,6 +37,7 @@ Product.init(
         isNumeric: true
       }
     },
+    // get the referenced category id and name from the category's table
     category_id: {
       type: DataTypes.INTEGER,
       references: {
