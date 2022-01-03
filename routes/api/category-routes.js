@@ -43,6 +43,7 @@ router.get('/:id', (req, res) => {
 
 // POST a new category /api/categories
 router.post('/', (req, res) => {
+  // expects {"category_name": "bikes"}
   Category.create({
     category_name: req.body.category_name
   }).then(categoryBody => res.json(categoryBody))
@@ -53,6 +54,7 @@ router.post('/', (req, res) => {
 
 // PUT update a specific category /api/categories/1
 router.put('/:id', (req, res) => {
+  // expects {"category_name": "furniture"}
   Category.update(req.body, {
     where: { 
       id: req.params.id

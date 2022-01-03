@@ -25,7 +25,7 @@
   ![Screenshot3](./images/Screenshot3.png)
   ![Screenshot4](./images/Screenshot4.png)
 
-  - Qucik demonstration video for route usage: [Demo Video]()
+  - Qucik demonstration video for route usage: [Demo Video](https://watch.screencastify.com/v/WX1mhDsch0zbRiC9hNFN)
 
   ## Tests
 
